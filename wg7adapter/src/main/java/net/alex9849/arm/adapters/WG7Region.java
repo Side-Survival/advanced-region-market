@@ -177,6 +177,22 @@ public class WG7Region implements WGRegion {
 
     @Override
     public int getVolume() {
+        if (isPolygonal()) {
+            int tmpVolume = 0;
+            Vector min = getMinPoint();
+            Vector max = getMaxPoint();
+            int height = 1 + max.getBlockY() - min.getBlockY();
+            int minY = min.getBlockY();
+            for(int x = min.getBlockX(); x <= max.getBlockX(); x++) {
+                for(int z = min.getBlockZ(); z <= max.getBlockZ(); z++) {
+                    if(contains(x, minY, z)) {
+                        tmpVolume++;
+                    }
+                }
+            }
+            return tmpVolume * height;
+        }
+
         return region.volume();
     }
 }
